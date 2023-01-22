@@ -1,5 +1,5 @@
 const datagame = require('./datagame.json')
-let presets = []
+let presets = {}
 
 class Preset {
 
@@ -19,7 +19,9 @@ class Preset {
 }
 
 function loadPresets() {
-    presets = JSON.parse(datagame.presets)
+    datagame.presets.forEach(preset => {
+        presets[preset.name] = preset
+    })
 }
 
 module.exports.Preset = Preset

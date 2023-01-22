@@ -32,13 +32,9 @@
 
     ],
 
-    "presets": {
-        "rondin": {
-            "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png"
+    "presets": [
+        {
+            "name": "rondin", "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png"
         }
-    }
+    ]
 }
-
-// Rondin, FireBall / météorite, Salagmite, Oiseaux
-
-//Time Vague: U0 = 20,  Un+1 = U0*1.5

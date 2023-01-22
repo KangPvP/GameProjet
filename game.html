@@ -39,7 +39,7 @@
         <script type="text/javascript">
             const { Obstacle, readObstacles, creationTick, checkRemove } = require('./obstacle.js')
             const { loadPresets } = require('./preset.js')
-            const { vagues, getVagueActuelle } = require('./vague.js')
+            const { vagues, getVagueActuelle, isVagueFinished, readVagues } = require('./vague.js')
 
             let startTime
 
@@ -110,14 +110,25 @@
                     }
                     
                 }
+
+                // vagues
+                if(isVagueFinished()) {
+                    stade++
+                    resetTime
+                    initVague()
+                }
+
                 // obstacles
                 creationTick(obstacles, getTimePassed())
-                
+
                 // mort
                 obstacles.forEach((element) => {
                     element.tick()
                     
                     let imgElement = document.getElementById(element.id)
+
+                    //console.log(element)
+
                     if(imgElement != undefined) {
 
                         let posX = imgElement.offsetLeft;
@@ -135,6 +146,7 @@
                         let playerMidY = playerY + 20
                         
                         //console.log(Math.abs(boxLeftPos - elementMidX) + " " + (rayX + 20))
+                        
                         console.log(Math.abs(playerY - elementMidY) + " " + (rayY + 20))
 
                         if(Math.abs(playerMidX - elementMidX) < (rayX + 20) && Math.abs(playerMidY - elementMidY) < (rayY + 20)) {
@@ -152,7 +164,8 @@
 
             function startGame() {
                 loadPresets()
-
+                readVagues()
+                initVague()
                 document.getElementById("btn-start").style.display = 'none'
                 document.getElementById("black-overlay").classList.add('shade-off')
                 setTimeout(() => {

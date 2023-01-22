@@ -13,6 +13,24 @@ class Obstacle {
         this.height = height;
         this.texture = texture;
         this.preset = preset;
+
+        if(preset != undefined) {
+
+            let presetname = this.preset
+            let nPreset = presets[presetname]
+
+            if(nPreset != undefined) {
+
+                if(nPreset.direction != undefined) this.direction = nPreset.direction 
+                if(nPreset.speed != undefined) this.speed = nPreset.speed 
+                if(nPreset.width != undefined) this.width = nPreset.width 
+                if(nPreset.height != undefined) this.height = nPreset.height
+                if(nPreset.texture != undefined) this.texture = nPreset.texture 
+
+            }
+
+
+        }
     }
 
     static fromObj(obj) {
@@ -25,36 +43,18 @@ class Obstacle {
         obstacle.id = this.id
         obstacle.style.position = 'absolute'
 
-        if(this.preset != undefined) {
-
-            if(presets.includes(this.preset)) {
-
-                let preset = presets[this.presets]
-
-                obstacle.src = './img/' + (preset.texture == undefined ? this.texture : preset.texture)
-                obstacle.width = preset.width == undefined ? this.width : preset.width
-                obstacle.height = preset.height == undefined ? this.height: preset.height
-                obstacle.style.left = (preset.x == undefined ? this.x : preset.x) + 'px'
-                obstacle.style.top = -50 - (preset.height == undefined ? this.height: preset.height) + 'px'
-
-            }
-
-        } else {
-
-            obstacle.src = './img/' + this.texture
-            obstacle.width = this.width
-            obstacle.height = this.height
-            obstacle.style.left = this.x + 'px'
-            obstacle.style.top = -50 - this.height + 'px'
-
-        }
-
+        obstacle.src = './img/' + this.texture
+        obstacle.width = this.width
+        obstacle.height = this.height
+        obstacle.style.left = this.x + 'px'
+        obstacle.style.top = -50 - this.height + 'px'
+        
+        console.log(obstacle)
         document.getElementById('obstacles').appendChild(obstacle)
     }
 
     tick() {
         if(!isCreated(this.id)) return;
-
         let obstacle = document.getElementById(this.id)
         obstacle.style.top = obstacle.offsetTop + this.speed * 10 + 'px'
         obstacle.style.left = obstacle.offsetLeft + this.direction + 'px'
@@ -65,9 +65,10 @@ class Obstacle {
 
 }
 
-function readObstacles() {
+function readObstacles(jsonList) {
+    console.log(jsonList)
     let obstacleList = []
-    datagame.obstacles.forEach((element, index) => {
+    jsonList.forEach((element, index) => {
         element.id = index
         obstacleList.push(Obstacle.fromObj(element))
     })
