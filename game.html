@@ -38,6 +38,8 @@
 
         <script type="text/javascript">
             const { Obstacle, readObstacles, creationTick, checkRemove } = require('./obstacle.js')
+            const { loadPresets } = require('./preset.js')
+            const { vagues, getVagueActuelle } = require('./vague.js')
 
             let startTime
 
@@ -47,7 +49,8 @@
 
             let tickLoop
 
-            let obstacles = readObstacles()
+            let vagueActuelle
+            let obstacles
     
             document.onkeydown = function(e) {
                 // si c'est la flèche gauche
@@ -81,9 +84,19 @@
             function getTimePassed() {
                 return Date.now() - startTime
             }
+
+            function resetTime() {
+                startTime = Date.now()
+            }
+
+            function initVague() {
+                vagueActuelle = getVagueActuelle()
+                obstacles =
+            }
     
             function onTickUpdate() {
                 let player = document.getElementById("player")
+                // déplacement
                 var boxLeftPos = player.offsetLeft
                 if(left) {
                     if(boxLeftPos >= 5){
@@ -99,6 +112,8 @@
                 }
                 // obstacles
                 creationTick(obstacles, getTimePassed())
+                
+                // mort
                 obstacles.forEach((element) => {
                     element.tick()
                     
@@ -136,13 +151,16 @@
             }
 
             function startGame() {
+                loadPresets()
+
                 document.getElementById("btn-start").style.display = 'none'
                 document.getElementById("black-overlay").classList.add('shade-off')
-                
                 setTimeout(() => {
                     document.getElementById("black-overlay").style.display = 'none'
                 }, 990)
+                
                 startTime = Date.now()
+                
                 startLoop()
             }
     
