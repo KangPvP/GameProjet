@@ -1,7 +1,0 @@
-[
-    {"x": 300, "time": 1000, "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png" },
-    {"x": 400, "time": 1500, "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png" },
-    {"x": 800, "time": 1700, "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png" },
-    {"x": 500, "time": 1800, "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png" },
-    {"x": 300, "time": 2100, "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png" }
-]

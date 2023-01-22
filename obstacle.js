@@ -1,9 +1,10 @@
-const obstacles = require('./obstacles.json')
+const datagame = require('./datagame.json')
+const { Preset, presets } = require('./preset.js')
 
 class Obstacle {
 
-    constructor(id, x, time, direction, speed, width, height, texture) {
-        this.id = id
+    constructor(id, x, time, direction, speed, width, height, texture, preset) {
+        this.id = id;
         this.x = x;
         this.time = time;
         this.direction = direction;
@@ -11,21 +12,42 @@ class Obstacle {
         this.width = width;
         this.height = height;
         this.texture = texture;
+        this.preset = preset;
     }
 
     static fromObj(obj) {
-        return new Obstacle(obj.id, obj.x, obj.time, obj.direction, obj.speed, obj.width, obj.height, obj.texture)
-    } 
+        return new Obstacle(obj.id, obj.x, obj.time, obj.direction, obj.speed, obj.width, obj.height, obj.texture, obj.preset)
+    }
 
     create() {
+
         let obstacle = document.createElement("img")
         obstacle.id = this.id
-        obstacle.src = './img/' + this.texture
-        obstacle.width = this.width
-        obstacle.height = this.height
         obstacle.style.position = 'absolute'
-        obstacle.style.left = this.x + 'px'
-        obstacle.style.top = -50 - this.height + 'px'
+
+        if(this.preset != undefined) {
+
+            if(presets.includes(this.preset)) {
+
+                let preset = presets[this.presets]
+
+                obstacle.src = './img/' + (preset.texture == undefined ? this.texture : preset.texture)
+                obstacle.width = preset.width == undefined ? this.width : preset.width
+                obstacle.height = preset.height == undefined ? this.height: preset.height
+                obstacle.style.left = (preset.x == undefined ? this.x : preset.x) + 'px'
+                obstacle.style.top = -50 - (preset.height == undefined ? this.height: preset.height) + 'px'
+
+            }
+
+        } else {
+
+            obstacle.src = './img/' + this.texture
+            obstacle.width = this.width
+            obstacle.height = this.height
+            obstacle.style.left = this.x + 'px'
+            obstacle.style.top = -50 - this.height + 'px'
+
+        }
 
         document.getElementById('obstacles').appendChild(obstacle)
     }
@@ -35,33 +57,37 @@ class Obstacle {
 
         let obstacle = document.getElementById(this.id)
         obstacle.style.top = obstacle.offsetTop + this.speed * 10 + 'px'
+        obstacle.style.left = obstacle.offsetLeft + this.direction + 'px'
         if(obstacle.offsetTop > 800) {
             obstacle.remove()
         }
     }
 
-
 }
 
 function readObstacles() {
     let obstacleList = []
-    obstacles.forEach((element, index) => {
+    datagame.obstacles.forEach((element, index) => {
         element.id = index
         obstacleList.push(Obstacle.fromObj(element))
     })
     return obstacleList
 }
 
+// permet de créer les obstacles dans l'html si leur temps est arrivé
 function creationTick(obstacleList, timePassed) {
     obstacleList.forEach((element) => {
+        // si le temps d'activation de l'obstacle est comprit entre le temps actuel et le temps actuel + 50 ms
         if(timePassed >= element.time && !(timePassed >= element.time + 50) && !isCreated(element.id)) {
             element.create()
         }
     })
 }
 
+// si un objet est déja passé et qu'il n'est plus dans le document, il ne sera pas dans la liste returned
 function checkRemove(obstacleList, timePassed) {
     obstacleList.forEach((element, index) => {
+        // s'il est déja passé et qu'il n'est plus dans le document
         if(!isCreated && timePassed > element.time + 50) {
             // enlever l'élément
             obstacleList.splice(index, 1)
