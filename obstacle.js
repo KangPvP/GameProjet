@@ -49,7 +49,6 @@ class Obstacle {
         obstacle.style.left = this.x + 'px'
         obstacle.style.top = -50 - this.height + 'px'
         
-        console.log(obstacle)
         document.getElementById('obstacles').appendChild(obstacle)
     }
 

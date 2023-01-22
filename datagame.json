@@ -2,7 +2,7 @@
     "vagues": [
         {
             "type": {
-                "id": 0, "duration": 20000, "name": "Vague 1", "coef": 1
+                "id": 0, "duration": 5000, "name": "Vague 1", "coef": 1
             },
 
             "obstacles": [

@@ -34,8 +34,9 @@ function readVagues() {
 
 function isVagueFinished(timePassed){
     let vagueActuel = getVagueActuelle()
+    console.log(timePassed)
     
-    return timePassed >= vagueActuel.duration
+    return timePassed >= vagueActuel.type.duration
 }
 
 function vagueInfo(){
@@ -53,11 +54,21 @@ function vagueInfo(){
     vaguePName.style.fontSize = 40
     
     document.body.appendChild(vaguePName)
+    setTimeout(() => {
+        vaguePName.classList.add('shade-off')
+        setTimeout(() => {
+            vaguePName.remove()
+        }, 990)
+    }, 1000)
 
 }
 
 function getVagueActuelle() {
     return vagues[stade]
+}
+
+function augmenterStade(amount) {
+    stade += amount
 }
 
 module.exports.Vague = Vague
@@ -66,6 +77,8 @@ module.exports.vagues = vagues
 module.exports.stade = stade
 module.exports.getVagueActuelle = getVagueActuelle
 module.exports.isVagueFinished = isVagueFinished
+module.exports.vagueInfo = vagueInfo
+module.exports.augmenterStade = augmenterStade
 
 //WhenVagueIsFinish
 

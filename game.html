@@ -39,7 +39,7 @@
         <script type="text/javascript">
             const { Obstacle, readObstacles, creationTick, checkRemove } = require('./obstacle.js')
             const { loadPresets } = require('./preset.js')
-            const { vagues, getVagueActuelle, isVagueFinished, readVagues } = require('./vague.js')
+            const { vagues, stade, getVagueActuelle, isVagueFinished, readVagues, vagueInfo, augmenterStade } = require('./vague.js')
 
             let startTime
 
@@ -110,12 +110,15 @@
                     }
                     
                 }
-
+                
                 // vagues
-                if(isVagueFinished()) {
-                    stade++
-                    resetTime
+                if(isVagueFinished(getTimePassed())) {
+
+                    vagueInfo()
+                    augmenterStade(1)
+                    resetTime()
                     initVague()
+                    console.log("FIN vage")
                 }
 
                 // obstacles
@@ -126,8 +129,6 @@
                     element.tick()
                     
                     let imgElement = document.getElementById(element.id)
-
-                    //console.log(element)
 
                     if(imgElement != undefined) {
 
@@ -144,21 +145,16 @@
 
                         let playerMidX = boxLeftPos + 20
                         let playerMidY = playerY + 20
-                        
-                        //console.log(Math.abs(boxLeftPos - elementMidX) + " " + (rayX + 20))
-                        
-                        console.log(Math.abs(playerY - elementMidY) + " " + (rayY + 20))
 
                         if(Math.abs(playerMidX - elementMidX) < (rayX + 20) && Math.abs(playerMidY - elementMidY) < (rayY + 20)) {
                             stopLoop()
-                            console.log("test")
                         }
 
                     }
 
                 })
 
-                obstacles = checkRemove(obstacles, getTimePassed)
+                obstacles = checkRemove(obstacles, getTimePassed())
 
             }
 
