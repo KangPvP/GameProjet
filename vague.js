@@ -40,25 +40,23 @@ function isVagueFinished(timePassed){
 }
 
 function vagueInfo(){
-    let vagueActuel = getVagueActuelle()
+    let vagueActuel = getVagueActuelle().type
     
     let vagueName = vagueActuel.name
 
     let vaguePName = document.createElement("p")
     vaguePName.id = vagueActuel.id
-    vaguePName.style.position = 'absolute'
-    vaguePName.style.top = "50%"
-    vaguePName.style.left = "50%"
-    vaguePName.textContent = vagueName
-    vaguePName.style.color = "rgb(255,0,0"
-    vaguePName.style.fontSize = 40
+    vaguePName.innerText = vagueName
+    vaguePName.style.color = "rgb(0,0,0)"
+    vaguePName.style.fontSize = "120px"
+    vaguePName.style.textAlign = 'center'
     
-    document.body.appendChild(vaguePName)
+    document.getElementById("vaguesAnnonce").appendChild(vaguePName)
     setTimeout(() => {
         vaguePName.classList.add('shade-off')
         setTimeout(() => {
             vaguePName.remove()
-        }, 990)
+        }, 5000)
     }, 1000)
 
 }

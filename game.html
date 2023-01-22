@@ -30,7 +30,11 @@
 
         </div>
 
-        <button id="btn-start", class="btn-start centered" onclick="startGame()">
+        <div id="vaguesAnnonce" class="vaguesAnnonce centeredX">
+
+        </div>
+
+        <button id="btn-start", class="btn-start centeredX" onclick="startGame()">
             <p>Start Game</p>
         </button>
 
@@ -113,12 +117,11 @@
                 
                 // vagues
                 if(isVagueFinished(getTimePassed())) {
-
                     vagueInfo()
                     augmenterStade(1)
                     resetTime()
                     initVague()
-                    console.log("FIN vage")
+                    console.log("FIN vague")
                 }
 
                 // obstacles

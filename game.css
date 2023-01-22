@@ -1,18 +1,31 @@
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('./font/opensans-variablefont_wdthwght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal; 
+}
+
 body {
     margin: 0px;
-    background: rgb(60,60,60);
+    background: rgb(49, 95, 111);
     /* pour enlever les scrollbar*/
     overflow-x: hidden;
     overflow-y: hidden;
 }
 
-.centered {
+.centeredX {
     position: relative;
     left: 50%;
-    top: 400px;
     transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
+}
+.centeredY {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
 }
 
 
@@ -75,6 +88,11 @@ div.black-overlay {
     top: -50px;
     left: -50px;
 }
+
+div.vaguesAnnonce {
+    top: 100px;
+}
+
 
 .shade-off {
     animation: shade-off;
