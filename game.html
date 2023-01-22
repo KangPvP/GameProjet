@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="game.css">
+    </head> 
+    
+    <body>
+
+        <div id="floor" class="floor">
+
+        </div>
+
+
+        <div id="player", class="player">
+            
+        </div>
+
+        <div id="ob1", class="square ob1">
+
+        </div>
+
+        <div id="obstacles", class="obstacles">
+
+        </div>
+
+        <div id="black-overlay" class="black-overlay">
+
+        </div>
+
+        <button id="btn-start", class="btn-start centered" onclick="startGame()">
+            <p>Start Game</p>
+        </button>
+
+        <!--script type="module" src="obstacle.js"></script-->
+
+        <script type="text/javascript">
+            const { Obstacle, readObstacles, creationTick, checkRemove } = require('./obstacle.js')
+
+            let startTime
+
+            const { ipcRenderer } = require('electron')
+            let left = false
+            let right = false
+
+            let tickLoop
+
+            let obstacles = readObstacles()
+    
+            document.onkeydown = function(e) {
+                // si c'est la flèche gauche
+                if(e.keyCode == 37) {
+                    left = true
+                } 
+                // sinon si c'est la flèche droite
+                else if(e.keyCode == 39) {
+                    right = true
+                }
+            }
+    
+            document.onkeyup = function(e) {
+                if(e.keyCode == 37) {
+                    left = false
+                }
+
+                else if(e.keyCode == 39) {
+                    right = false
+                }
+            }
+
+            function startLoop() {
+                tickLoop = setInterval(() => onTickUpdate(), 10)
+            }
+
+            function stopLoop() {
+                clearInterval(tickLoop)
+            }
+
+            function getTimePassed() {
+                return Date.now() - startTime
+            }
+    
+            function onTickUpdate() {
+                let player = document.getElementById("player")
+                var boxLeftPos = player.offsetLeft
+                if(left) {
+                    if(boxLeftPos >= 5){
+                        player.style.left = boxLeftPos - 12 + "px"
+                    }
+                        
+                }
+                if(right) {
+                    if(boxLeftPos <= 1150){
+                        player.style.left = boxLeftPos + 12 + "px"
+                    }
+                    
+                }
+                // obstacles
+                creationTick(obstacles, getTimePassed())
+                obstacles.forEach((element) => {
+                    element.tick()
+                    
+                    let imgElement = document.getElementById(element.id)
+                    if(imgElement != undefined) {
+
+                        let posX = imgElement.offsetLeft;
+                        let posY = imgElement.offsetTop;
+
+                        let rayX = element.width / 2
+                        let rayY = element.height / 2
+
+                        let elementMidX = posX + rayX
+                        let elementMidY = posY + rayY
+
+                        let playerY = player.offsetTop
+
+                        let playerMidX = boxLeftPos + 20
+                        let playerMidY = playerY + 20
+                        
+                        //console.log(Math.abs(boxLeftPos - elementMidX) + " " + (rayX + 20))
+                        console.log(Math.abs(playerY - elementMidY) + " " + (rayY + 20))
+
+                        if(Math.abs(playerMidX - elementMidX) < (rayX + 20) && Math.abs(playerMidY - elementMidY) < (rayY + 20)) {
+                            stopLoop()
+                            console.log("test")
+                        }
+
+                    }
+
+                })
+
+                obstacles = checkRemove(obstacles, getTimePassed)
+
+            }
+
+            function startGame() {
+                document.getElementById("btn-start").style.display = 'none'
+                document.getElementById("black-overlay").classList.add('shade-off')
+                
+                setTimeout(() => {
+                    document.getElementById("black-overlay").style.display = 'none'
+                }, 990)
+                startTime = Date.now()
+                startLoop()
+            }
+    
+            </script>
+        
+    </body>
+
+
+</html>
+    

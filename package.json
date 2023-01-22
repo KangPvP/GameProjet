@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "electron.js": "^0.0.1"
+  },
+  "name": "projetgame",
+  "version": "1.0.0",
+  "description": "Just a game",
+  "main": "index.js",
+  "devDependencies": {
+    "electron": "^22.0.3"
+  },
+  "scripts": {
+    "test": "electron ."
+  },
+  "author": "KangPvP, Arka_on",
+  "license": "ISC"
+}
