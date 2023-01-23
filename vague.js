@@ -56,8 +56,8 @@ function vagueInfo(){
         vaguePName.classList.add('shade-off')
         setTimeout(() => {
             vaguePName.remove()
-        }, 5000)
-    }, 1000)
+        }, 1670)
+    }, 2000)
 
 }
 

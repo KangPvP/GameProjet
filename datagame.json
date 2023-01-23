@@ -10,7 +10,15 @@
                 {"x": 400, "time": 1500, "preset": "rondin"},
                 {"x": 800, "time": 1700, "preset": "rondin"},
                 {"x": 500, "time": 1800, "preset": "rondin"},
-                {"x": 300, "time": 2100, "preset": "rondin"}
+                {"x": 300, "time": 2100, "preset": "rondin"},
+                {"x": 100, "time": 1700, "preset": "rondin"},
+                {"x": 200, "time": 1900, "preset": "rondin"},
+                {"x": 700, "time": 1300, "preset": "rondin"},
+                {"x": 500, "time": 2200, "preset": "rondin"},
+                {"x": 750, "time": 2200, "preset": "fireball"},
+                {"x": 400, "time": 2000, "preset": "fireball"},
+                {"x": 650, "time": 1600, "preset": "fireball"}
+
             ]
         },
         {
@@ -35,6 +43,9 @@
     "presets": [
         {
             "name": "rondin", "speed": 0.8, "direction": 0, "width": 128, "height": 128, "texture": "rondin.png"
+        },
+        {
+            "name": "fireball", "speed": 1.1, "direction": -1.6, "width": 90, "height": 90, "texture": "fireball.png"
         }
     ]
 }
