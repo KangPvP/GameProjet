@@ -44,12 +44,16 @@
             const { Obstacle, readObstacles, creationTick, checkRemove } = require('./obstacle.js')
             const { loadPresets } = require('./preset.js')
             const { vagues, stade, getVagueActuelle, isVagueFinished, readVagues, vagueInfo, augmenterStade } = require('./vague.js')
+            const { deathEffect } = require('./visuals.js')
 
             let startTime
 
             const { ipcRenderer } = require('electron')
             let left = false
             let right = false
+
+            let statusList = {waitStart: 0, game: 1, pause: 2, endDead: 3, endWin: 4}
+            let status = statusList.waitStart
 
             let tickLoop
 
@@ -99,69 +103,76 @@
             }
     
             function onTickUpdate() {
-                let player = document.getElementById("player")
-                // déplacement
-                var boxLeftPos = player.offsetLeft
-                if(left) {
-                    if(boxLeftPos >= 5){
-                        player.style.left = boxLeftPos - 9 + "px"
+
+                if (status == statusList.game){
+
+                    let player = document.getElementById("player")
+                    // déplacement
+                    var boxLeftPos = player.offsetLeft
+                    if(left) {
+                        if(boxLeftPos >= 5){
+                            player.style.left = boxLeftPos - 9 + "px"
+                        }
+                            
                     }
+                    if(right) {
+                        if(boxLeftPos <= 1150){
+                            player.style.left = boxLeftPos + 9 + "px"
+                        }
+                    }
+
+                    // vagues
+                    if(isVagueFinished(getTimePassed())) {
+                        vagueInfo()
+                        augmenterStade(1)
+                        resetTime()
+                        initVague()
+                        console.log("FIN vague")
+                    }
+
+                    // obstacles
+                    creationTick(obstacles, getTimePassed())
+
+                    // mort
+                    obstacles.forEach((element) => {
+                        element.tick()
                         
-                }
-                if(right) {
-                    if(boxLeftPos <= 1150){
-                        player.style.left = boxLeftPos + 9 + "px"
-                    }
-                    
-                }
-                
-                // vagues
-                if(isVagueFinished(getTimePassed())) {
-                    vagueInfo()
-                    augmenterStade(1)
-                    resetTime()
-                    initVague()
-                    console.log("FIN vague")
-                }
+                        let imgElement = document.getElementById(element.id)
 
-                // obstacles
-                creationTick(obstacles, getTimePassed())
+                        if(imgElement != undefined) {
 
-                // mort
-                obstacles.forEach((element) => {
-                    element.tick()
-                    
-                    let imgElement = document.getElementById(element.id)
+                            let posX = imgElement.offsetLeft;
+                            let posY = imgElement.offsetTop;
 
-                    if(imgElement != undefined) {
+                            let rayX = element.width / 2
+                            let rayY = element.height / 2
 
-                        let posX = imgElement.offsetLeft;
-                        let posY = imgElement.offsetTop;
+                            let elementMidX = posX + rayX
+                            let elementMidY = posY + rayY
 
-                        let rayX = element.width / 2
-                        let rayY = element.height / 2
+                            let playerY = player.offsetTop
 
-                        let elementMidX = posX + rayX
-                        let elementMidY = posY + rayY
+                            let playerMidX = boxLeftPos + 20
+                            let playerMidY = playerY + 20
 
-                        let playerY = player.offsetTop
+                            if(Math.abs(playerMidX - elementMidX) < (rayX + 20) && Math.abs(playerMidY - elementMidY) < (rayY + 20)) {
+                                stopLoop()
+                                deathEffect(playerMidX, playerMidY)
+                                status = statusList.endDead
+                            }
 
-                        let playerMidX = boxLeftPos + 20
-                        let playerMidY = playerY + 20
-
-                        if(Math.abs(playerMidX - elementMidX) < (rayX + 20) && Math.abs(playerMidY - elementMidY) < (rayY + 20)) {
-                            stopLoop()
                         }
 
-                    }
+                        obstacles = checkRemove(obstacles, getTimePassed())
 
-                })
+                    })
 
-                obstacles = checkRemove(obstacles, getTimePassed())
+                }
 
             }
 
             function startGame() {
+                status = statusList.game
                 loadPresets()
                 readVagues()
                 initVague()

@@ -67,7 +67,7 @@ button.btn-start {
     background-color: rgb(0, 183, 255);
     display: inline-block;
     border: none;
-    top: 100px;
+    top: 450px;
     border-radius: 10px;
     padding: 10px 25px;
     font-size: 20px;
@@ -78,6 +78,8 @@ button.btn-start:hover {
     background-color: rgb(74, 204, 255);
     box-shadow: 0px 0px 3px rgb(74, 204, 255);
     cursor: pointer;
+    font-size: 25px;
+    padding: 13px 28px;
 }
 
 div.black-overlay {
@@ -100,6 +102,14 @@ div.vaguesAnnonce {
     animation-duration: 1s;
 }
 
+.deathEffect {
+    background-color: rgba(255, 0, 0, 1);
+    border-radius: 100%;
+    padding: 200px;
+    /*animation: upSize;
+    animation-duration: 1s;*/
+}
+
 @keyframes shade-off {
     from {
         opacity: 100%;
@@ -107,4 +117,16 @@ div.vaguesAnnonce {
     to {
         opacity: 0%;
     }
+}
+
+@keyframes upSize {
+
+    from {
+        padding: 20px;
+    }
+
+    to {
+        padding: 2000px;
+    }
+
 }
