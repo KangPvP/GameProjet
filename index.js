@@ -34,4 +34,5 @@ app.on('activate', () => {
 // events
 ipcMain.on('getTime', (event, args) => {
     return Date.now - time
+    
 })
